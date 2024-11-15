@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Streaming App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      text-align: center;
+    }
+    .track-list {
+      margin: 20px auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .track {
+      background-color: #fff;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 80%;
+      max-width: 300px;
+    }
+    .track:hover {
+      background-color: #e0e0e0;
+    }
+    audio {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Music Streaming App</h1>
+<div class="track-list" id="track-list">
+  <!-- Tracks will be listed here -->
+</div>
+
+<audio id="audio-player" controls></audio>
+
+<script>
+  async function fetchTracks() {
+    const response = await fetch('/api/tracks');
+    const tracks = await response.json();
+    const trackList = document.getElementById('track-list');
+    
+    tracks.forEach(track => {
+      const trackElement = document.createElement('div');
+      trackElement.classList.add('track');
+      trackElement.innerText = track.title;
+      trackElement.onclick = () => playTrack(track.url);
+      trackList.appendChild(trackElement);
+    });
+  }
+
+  function playTrack(url) {
+    const audioPlayer = document.getElementById('audio-player');
+    audioPlayer.src = url;
+    audioPlayer.play();
+  }
+
+  fetchTracks();
+</script>
+
+</body>
+</html>
